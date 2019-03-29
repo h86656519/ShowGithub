@@ -24,8 +24,10 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         setupViewPager(viewPager);
     }
     private void setupViewPager(ViewPager viewPager) {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        MyReposFragment myReposFragment = new MyReposFragment();
+        myReposFragment.setContext(this);
 
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(MyReposFragment.newInstance());
         adapter.addFragment(StarredRepoFragment.newInstance());
         viewPager.setAdapter(adapter);

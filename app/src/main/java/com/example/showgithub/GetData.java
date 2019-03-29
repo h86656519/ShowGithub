@@ -48,13 +48,12 @@ public class GetData {
         conn.setConnectTimeout(5000);
         conn.setRequestMethod("GET"); //GET请求不支持请求体，只有POST请求才能设置请求体
         conn.setRequestProperty("Authorization", "token" + " " + token);
-
-
+        Log.i("suviniii", "conn.getResponseCode() : " + conn.getResponseCode());
         if (conn.getResponseCode() == 200) {
             InputStream in = conn.getInputStream();
             byte[] data = StreamTool.read(in);
             String html = new String(data, "UTF-8");
-            // Log.i("suviniii","html : " + html);
+             Log.i("suviniii","html : " + html);
             return html;
         }
         return null;

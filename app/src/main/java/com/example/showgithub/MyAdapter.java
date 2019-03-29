@@ -11,7 +11,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
-     ArrayList<String> name_list = new ArrayList<>();
+    ArrayList<String> name_list = new ArrayList<>();
     private final String TAG = "MyAdapter";
 
     public MyAdapter(Context context) {
@@ -37,6 +37,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
     @Override
     public int getItemCount() {
+        Log.i("suvini", "name_list.size() : " + name_list.size());
         return name_list.size();
     }
 

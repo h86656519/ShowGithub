@@ -4,10 +4,10 @@ public class Repo {
     public String id = "";
     public String name = "";
     public String node_id = "";
-    public String fullName = ""; //用gson 變數不能亂取，要跟資料一樣
+    public String full_name = ""; //用gson 變數不能亂取，要跟資料一樣
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
+    public void setfull_name(String full_name) {
+        this.full_name = full_name;
     }
 
     public void setNodeId(String nodeId) {
@@ -30,8 +30,8 @@ public class Repo {
         return id;
     }
 
-    public String getFullName() {
-        return fullName;
+    public String getfull_name() {
+        return full_name;
     }
 
     public String getNodeId() {
@@ -40,6 +40,6 @@ public class Repo {
 
     @Override
     public String toString() {
-        return new StringBuilder().append("id:").append(getName()).append(", name:").append(", node_id:").append(getFullName()).toString();
+        return new StringBuilder().append("id:").append(getName()).append(", name:").append(", node_id:").append(getfull_name()).toString();
     }
 }

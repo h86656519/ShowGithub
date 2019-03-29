@@ -29,7 +29,7 @@ public class JsonParser {
                 person.setId(id);
                 person.setNodeId(nodeId);
                 person.setName(name);
-                person.setFullName(fullName);
+                person.setfull_name(fullName);
                 persons.add(person);
             }
         }catch (JSONException e){

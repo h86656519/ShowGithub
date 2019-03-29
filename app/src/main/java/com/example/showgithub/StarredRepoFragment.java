@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 
 public class StarredRepoFragment extends Fragment {
     View view;
+    String starred_URL = "https://api.github.com/user/starred";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
