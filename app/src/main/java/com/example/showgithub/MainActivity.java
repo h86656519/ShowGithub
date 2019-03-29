@@ -50,6 +50,8 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         }
     };
 
+    private void testFunction(){}
+
     @Override
     public void onPageScrolled(int i, float v, int i1) {
 
