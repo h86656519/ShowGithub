@@ -42,13 +42,13 @@ public class GetData {
         return null;
     }
 
-    public static String getHtmlwithtoken(String path, String token) throws Exception {
+    public static String getHtmlwithtoken(String path) throws Exception {
         URL url = new URL(path);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setConnectTimeout(5000);
         conn.setRequestMethod("GET"); //GET请求不支持请求体，只有POST请求才能设置请求体
-        conn.setRequestProperty("Authorization", "token" + " " + token);
-        Log.i("suviniii", "conn.getResponseCode() : " + conn.getResponseCode());
+
+        Log.i("suviniii", "getResponseCode : " + conn.getResponseCode());
         if (conn.getResponseCode() == 200) {
             InputStream in = conn.getInputStream();
             byte[] data = StreamTool.read(in);

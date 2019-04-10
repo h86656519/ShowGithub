@@ -18,14 +18,15 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 public class MyReposFragment extends Fragment {
-    View view;
-    Context context;
-    RecyclerView recyclerView;
-    MyAdapter myAdapter;
-    TextView id, nodeId, name, fullName;
-    String HTML_URL = "https://api.github.com/user/repos";
+    private View view;
+    private Context context;
+    private RecyclerView recyclerView;
+    private MyAdapter myAdapter;
+    private TextView id, nodeId, name, fullName;
+   // private String HTML_URL = "https://api.github.com/user/repos";
+    private String HTML_URL = "https://github.com/login/oauth/authorize?client_id=a72268d4b6855f2f208e&state=de08fa4c8b87d14e3a01f208b20d168e46db3483&redirect_uri=http://localhost/callback;";
 
-    private String token = "2c10c5b3c534a7b97fcc989c31de78d61fea4d00";
+    //private String token = "ab1d0248305b7c86dcf8690c42ecd23def3c05f3 ";
     private GsonParser gsonParser = new GsonParser();
     private ArrayList<String> name_list = new ArrayList<>();
 
@@ -51,7 +52,7 @@ public class MyReposFragment extends Fragment {
                 try {
                     Message message = new Message();
                     message.what = 0x002;
-                    String personData = GetData.getHtmlwithtoken(HTML_URL,token); //用token權限，抓下資料
+                    String personData = GetData.getHtmlwithtoken(HTML_URL); //用token權限，抓下資料
                     ArrayList<Repo> persons = gsonParser.parse(personData.toString()); //方法2 傳過去用Gson做解析
 
                     message.obj = persons;
@@ -92,10 +93,12 @@ public class MyReposFragment extends Fragment {
             }
         }
     };
-    public static MyReposFragment newInstance() {
+
+    //工廠方法
+    public static MyReposFragment newInstance(int index) {
         MyReposFragment f = new MyReposFragment();
         Bundle args = new Bundle();
-        args.putInt("index", 0);
+        args.putInt("index", index);
         f.setArguments(args);
         return f;
     }
