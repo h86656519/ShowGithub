@@ -25,7 +25,6 @@ public class MyReposFragment extends Fragment {
     private TextView id, nodeId, name, fullName;
    // private String HTML_URL = "https://api.github.com/user/repos";
     private String HTML_URL = "https://github.com/login/oauth/authorize?client_id=a72268d4b6855f2f208e&state=de08fa4c8b87d14e3a01f208b20d168e46db3483&redirect_uri=http://localhost/callback;";
-
     //private String token = "ab1d0248305b7c86dcf8690c42ecd23def3c05f3 ";
     private GsonParser gsonParser = new GsonParser();
     private ArrayList<String> name_list = new ArrayList<>();
