@@ -28,7 +28,6 @@ public class MyReposFragment extends Fragment {
     //private String token = "ab1d0248305b7c86dcf8690c42ecd23def3c05f3 ";
     private GsonParser gsonParser = new GsonParser();
     private ArrayList<String> name_list = new ArrayList<>();
-
     public void setContext(Context context) {
         this.context = context;
     }
