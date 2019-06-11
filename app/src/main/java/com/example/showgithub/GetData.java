@@ -53,7 +53,7 @@ public class GetData {
             InputStream in = conn.getInputStream();
             byte[] data = StreamTool.read(in);
             String html = new String(data, "UTF-8");
-             Log.i("suviniii","html : " + html);
+            Log.i("suviniii", "html : " +html);
             return html;
         }
         return null;

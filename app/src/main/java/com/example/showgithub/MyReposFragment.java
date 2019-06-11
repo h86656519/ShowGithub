@@ -24,7 +24,8 @@ public class MyReposFragment extends Fragment {
     private MyAdapter myAdapter;
     private TextView id, nodeId, name, fullName;
    // private String HTML_URL = "https://api.github.com/user/repos";
-    private String HTML_URL = "https://github.com/login/oauth/authorize?client_id=a72268d4b6855f2f208e&state=de08fa4c8b87d14e3a01f208b20d168e46db3483&redirect_uri=http://localhost/callback;";
+  //  private String HTML_URL = "https://github.com/login/oauth/authorize?client_id=a72268d4b6855f2f208e&state=de08fa4c8b87d14e3a01f208b20d168e46db3483&redirect_uri=http://localhost/callback;";
+    private String HTML_URL = "https://api.github.com/users/h86656519/repos";
     //private String token = "ab1d0248305b7c86dcf8690c42ecd23def3c05f3 ";
     private GsonParser gsonParser = new GsonParser();
     private ArrayList<String> name_list = new ArrayList<>();
@@ -77,8 +78,14 @@ public class MyReposFragment extends Fragment {
                         name_list.add(persons.get(i).getName());
                     }
                     myAdapter.setNames(name_list);
-                    recyclerView.setAdapter(myAdapter); //必須放在 myAdapter.setNames 之後做
 
+                    recyclerView.setAdapter(myAdapter); //必須放在 myAdapter.setNames 之後做
+                    myAdapter.setOnItemClickListener(new MyAdapter.OnItemClickListener(){
+                        @Override
+                        public void onItemClick(View view , int position){
+                            Log.i("suvini", "position : " + position);
+                        }
+                    });
                     id.setText(persons.get(0).getId()); //設定0，因為只想抓第一筆即可
                     nodeId.setText(persons.get(0).getNodeId());
 //                    name.setText(nameString);
