@@ -35,6 +35,11 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implem
     public void onBindViewHolder(final MyAdapter.ViewHolder holder, final int position) {
         String name = name_list.get(position);
         holder.name_holder.setText(name);
+        if (highlightIndex == position){
+            holder.name_holder.setTextColor(Color.RED);
+        }else {
+            holder.name_holder.setTextColor(Color.BLACK);
+        }
 
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,30 +48,18 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implem
 
             }
         });
-//        不帶資料的寫法
-//        holder.setOnItemClick(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//               if (holder.name_holder.getCurrentTextColor() != Color.RED){
-//                   holder.name_holder.setTextColor(Color.RED);
-//               }else {
-//                   holder.name_holder.setTextColor(Color.BLACK);
-//               }
-//            }
-//        });
-//      有帶資料的寫法
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mOnItemClickListener.onItemClick(v,position);
-                if (holder.name_holder.getCurrentTextColor() != Color.RED){
-                   holder.name_holder.setTextColor(Color.RED);
-               }else {
-                   holder.name_holder.setTextColor(Color.BLACK);
-               }
+//                highlightIndex = position;
+                hilightouch(position);
+                notifyDataSetChanged();
             }
         });
     }
+
+    private int highlightIndex = -1;
 
     @Override
     public int getItemCount() {
@@ -105,5 +98,13 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implem
 
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.mOnItemClickListener = listener;
+    }
+
+    public void hilightouch(int touch){
+        if (highlightIndex == touch){
+            highlightIndex = -1;
+        }else {
+            highlightIndex =touch;
+        }
     }
 }
