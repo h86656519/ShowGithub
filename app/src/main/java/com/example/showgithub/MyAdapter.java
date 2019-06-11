@@ -43,6 +43,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implem
 
             }
         });
+//        不帶資料的寫法
 //        holder.setOnItemClick(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
@@ -53,7 +54,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implem
 //               }
 //            }
 //        });
-
+//      有帶資料的寫法
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,6 +82,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implem
             view = itemView;
             this.name_holder = (TextView) itemView.findViewById(R.id.name);
         }
+
 //        public void setOnItemClick(View.OnClickListener l) {
 //            this.view.setOnClickListener(l);
 //        }
