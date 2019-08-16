@@ -1,11 +1,13 @@
 package com.example.showgithub;
 
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
+
 import android.os.Bundle;
 import android.view.MenuItem;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener{
     private ViewPager viewPager;
@@ -37,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
         @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        public boolean onNavigationItemSelected( MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.myRepos:
                     viewPager.setCurrentItem(0);

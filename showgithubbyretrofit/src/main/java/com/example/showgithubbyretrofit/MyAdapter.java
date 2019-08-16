@@ -1,6 +1,7 @@
-package com.example.showgithub;
+package com.example.showgithubbyretrofit;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,9 +17,10 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implem
     ArrayList<String> name_list = new ArrayList<>();
     private final String TAG = "MyAdapter";
     private OnItemClickListener mOnItemClickListener = null;
+    Context Mycontext;
 
     public MyAdapter(Context context) {
-
+        this.Mycontext = context;
     }
 
     public void setNames(ArrayList<String> nameslist) {
@@ -36,16 +38,16 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implem
     public void onBindViewHolder(final MyAdapter.ViewHolder holder, final int position) {
         String name = name_list.get(position);
         holder.name_holder.setText(name);
-        if (highlightIndex == position){
+        if (highlightIndex == position) {
             holder.name_holder.setTextColor(Color.RED);
-        }else {
+        } else {
             holder.name_holder.setTextColor(Color.BLACK);
         }
 
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              //  Log.i(TAG, "view position : " + position);
+//                Log.i(TAG, "view position : " + position);
 
             }
         });
@@ -54,6 +56,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implem
             @Override
             public void onClick(View v) {
 //                highlightIndex = position;
+
+
+                mOnItemClickListener.onItemClick(v,position);
                 hilightouch(position);
                 notifyDataSetChanged();
             }
@@ -85,14 +90,14 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implem
     }
 
     public static interface OnItemClickListener {
-        void onItemClick(View view , int position);
+        void onItemClick(View view, int position);
     }
 
     @Override
     public void onClick(View v) {
         if (mOnItemClickListener != null) {
             //注意这里使用getTag方法获取position
-            mOnItemClickListener.onItemClick(v,(int)v.getTag());
+            mOnItemClickListener.onItemClick(v, (int) v.getTag());
 
         }
     }
@@ -101,11 +106,11 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implem
         this.mOnItemClickListener = listener;
     }
 
-    public void hilightouch(int touch){
-        if (highlightIndex == touch){
+    public void hilightouch(int touch) {
+        if (highlightIndex == touch) {
             highlightIndex = -1;
-        }else {
-            highlightIndex =touch;
+        } else {
+            highlightIndex = touch;
         }
     }
 }
