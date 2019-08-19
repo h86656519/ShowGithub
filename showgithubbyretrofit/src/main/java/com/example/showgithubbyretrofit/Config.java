@@ -11,13 +11,4 @@ public class Config {
     public static final String postURL =       "https://api.github.com/repos/";
     public static final String baseURL =       "https://api.github.com/";
 
-    // could be Main2Fragment or RepoFragment
-    public static Fragment createFragment() {
-        if(BuildConfig.DEBUG) {
-            return Main2Fragment.getInstance();
-        }
-        RepoFragment repoFragment = RepoFragment.getInstance();
-        return repoFragment;
-    }
-
 }

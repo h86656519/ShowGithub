@@ -13,7 +13,7 @@
         android:theme="@style/AppTheme">
 
         <activity android:name=".RepoActivity" />
-        <activity android:name=".Main2Activity">
+        <activity android:name=".Main2Activity">   <!--MainActivity 是走activity 來顯示，Main2Activity 是用fragment 來顯示-->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

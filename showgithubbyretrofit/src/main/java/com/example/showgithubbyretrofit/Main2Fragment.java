@@ -32,7 +32,7 @@ public class Main2Fragment extends Fragment {
     private RecyclerView recyclerView;
     private MyAdapter myAdapter;
     private EditText api_ed;
-    private String account;
+    private String account,reporsname;
     private ArrayList<String> name_list = new ArrayList<>();
     private View Main2FragmentView;
 
@@ -55,8 +55,8 @@ public class Main2Fragment extends Fragment {
                 Log.i(TAG, "position : " + position);
                 RepoFragment repoFragment = RepoFragment.getInstance();
                 Bundle bundle = new Bundle();
-                bundle.putString(TAG, "reporsname" + name_list.get(position));
-                bundle.putString(TAG,"account" +  account);
+                bundle.putString("reporsname", name_list.get(position));
+                bundle.putString("account",  account);
                 repoFragment.setArguments(bundle); //把資料加進 fragment
                 ((Main2Activity) getActivity()).replaceFragment(R.id.main2_layout, repoFragment, true); //調用replaceFragment 將RepoFragment 加入進去
             }
