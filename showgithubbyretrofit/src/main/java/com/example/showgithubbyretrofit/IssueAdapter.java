@@ -59,7 +59,7 @@ public class IssueAdapter extends RecyclerView.Adapter<IssueAdapter.ViewHolder> 
             @Override
             public void onClick(View v) {
 
-                mOnItemClickListener.onItemClick(v, position);
+//                mOnItemClickListener.onItemClick(v, position);
                 hilightouch(position);
                 notifyDataSetChanged();
             }
@@ -70,7 +70,6 @@ public class IssueAdapter extends RecyclerView.Adapter<IssueAdapter.ViewHolder> 
 
     @Override
     public int getItemCount() {
-        Log.i(TAG, "getItemCount: "+ title_list.size());
         return title_list.size();
     }
 

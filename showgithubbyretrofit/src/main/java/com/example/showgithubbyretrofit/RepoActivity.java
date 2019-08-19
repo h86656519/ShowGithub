@@ -30,7 +30,6 @@ public class RepoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_repo);
 
-
         Intent intent = getIntent();
         reporsName = intent.getStringExtra("reporsname");
         account = intent.getStringExtra("account");
@@ -38,8 +37,6 @@ public class RepoActivity extends AppCompatActivity {
         initView();
 
         requestgithub();
-
-
     }
 
     public void requestgithub() {

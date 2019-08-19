@@ -1,21 +1,20 @@
 package com.example.showgithubbyretrofit;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 
-import androidx.appcompat.app.AppCompatActivity;
+import android.os.Bundle;
+
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,38 +23,49 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity {
-    private static final String TAG = "MainActivity";
+
+/**
+ * A simple {@link Fragment} subclass.
+ */
+public class Main2Fragment extends Fragment {
+    private static final String TAG = "Main2Activity";
     private RecyclerView recyclerView;
     private MyAdapter myAdapter;
     private EditText api_ed;
     private String account;
     private ArrayList<String> name_list = new ArrayList<>();
+    private View Main2FragmentView;
+
+    public Main2Fragment() { }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        Main2FragmentView = inflater.inflate(R.layout.fragment_main2, container, false);
         initView();
-        myAdapter = new MyAdapter(this);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(MainActivity.this, RecyclerView.VERTICAL, false);
+        myAdapter = new MyAdapter(getActivity());
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(),
+                RecyclerView.VERTICAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
-
         recyclerView.setAdapter(myAdapter);
         myAdapter.setOnItemClickListener(new MyAdapter.OnItemClickListener() {
+
             @Override
             public void onItemClick(View view, int position) {
                 Log.i(TAG, "position : " + position);
-                Intent intent = new Intent(MainActivity.this, RepoActivity.class);
-                intent.putExtra("reporsname", name_list.get(position));
-                intent.putExtra("account", account);
-                startActivity(intent);
+                RepoFragment repoFragment = RepoFragment.getInstance();
+                Bundle bundle = new Bundle();
+                bundle.putString(TAG, "reporsname" + name_list.get(position));
+                bundle.putString(TAG,"account" +  account);
+                repoFragment.setArguments(bundle); //把資料加進 fragment
+                ((Main2Activity) getActivity()).replaceFragment(R.id.main2_layout, repoFragment, true); //調用replaceFragment 將RepoFragment 加入進去
             }
         });
+        return Main2FragmentView;
     }
 
-    public void initView() {
-        api_ed = findViewById(R.id.githubaccount);
+    private void initView() {
+        api_ed = Main2FragmentView.findViewById(R.id.githubaccount);
         api_ed.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -68,14 +78,10 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-
-        Main2Fragment fragment = new Main2Fragment();
-        getSupportFragmentManager().beginTransaction();
-        ////
+        recyclerView = (RecyclerView) Main2FragmentView.findViewById(R.id.recyclerView);
     }
 
-    public void requestgithub() {
+    private void requestgithub() {
         PostApi postApi = AppClientManager.getGithubInstance().create(PostApi.class);
         postApi.getDynamicGithub(account).enqueue(new Callback<List<GithubRepo>>() {
             @Override
@@ -90,11 +96,9 @@ public class MainActivity extends AppCompatActivity {
                     for (int i = 0; i < response.body().size(); i++) {
                         name_list.add(response.body().get(i).getName());
                     }
-
                     myAdapter.setNames(name_list);
                     myAdapter.notifyDataSetChanged();
                 }
-
             }
 
             @Override
@@ -103,4 +107,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    public static Main2Fragment getInstance() {
+        Main2Fragment main2Fragment = new Main2Fragment();
+        return main2Fragment;
+    }
+
 }
