@@ -1,5 +1,7 @@
 package com.example.showgithubbyretrofit;
 
+import java.util.concurrent.TimeUnit;
+
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -42,8 +44,15 @@ public class AppClientManager {
 //        return manager.retrofit;
 //    }
 
+
     public static Retrofit getGithubInstance() {
-        okHttpClient = builder.build();
+        //okHttpClient = builder.build();
+        okHttpClient = builder // 新增攔截器
+                .connectTimeout(30, TimeUnit.SECONDS)   // 設置連線Timeout，沒寫預設是10秒
+                .addInterceptor(new LoggingInterceptor()) //新增攔截器
+
+                .build();
+
         retrofit = new Retrofit.Builder()
                 .baseUrl(Config.baseURL)
                 .addConverterFactory(GsonConverterFactory.create())

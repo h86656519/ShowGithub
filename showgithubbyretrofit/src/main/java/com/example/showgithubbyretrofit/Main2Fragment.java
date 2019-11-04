@@ -28,7 +28,7 @@ import retrofit2.Response;
  * A simple {@link Fragment} subclass.
  */
 public class Main2Fragment extends Fragment {
-    private static final String TAG = "Main2Activity";
+    private static final String TAG = "Main2Fragment";
     private RecyclerView recyclerView;
     private MyAdapter myAdapter;
     private EditText api_ed;
@@ -87,11 +87,11 @@ public class Main2Fragment extends Fragment {
             @Override
             public void onResponse(Call<List<GithubRepo>> call, Response<List<GithubRepo>> response) {
 //                Log.i("testt", "" + Thread.currentThread().getName());  取得目前跑在哪條thrread上
-                Log.i(TAG, "response.code " + response.code());
-                Log.i(TAG, "response.message " + response.message());
+               // Log.i(TAG, "response.code " + response.code());
+                // Log.i(TAG, "response.message " + response.message());
                 if (response.isSuccessful()) {
-                    Log.i(TAG, "response.body " + response.body());
-                    Log.i(TAG, "response.size " + response.body().size());
+                 //   Log.i(TAG, "response.body " + response.body());
+                   // Log.i(TAG, "response.size " + response.body().size());
 
                     for (int i = 0; i < response.body().size(); i++) {
                         name_list.add(response.body().get(i).getName());
