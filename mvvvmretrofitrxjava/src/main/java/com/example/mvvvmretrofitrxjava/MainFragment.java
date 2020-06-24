@@ -22,11 +22,7 @@ import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 
 public class MainFragment extends Fragment {
@@ -75,7 +71,7 @@ public class MainFragment extends Fragment {
                 if (event.getAction() == KeyEvent.ACTION_DOWN
                         && event.getKeyCode() == KeyEvent.KEYCODE_ENTER) { //按下ENTER 的動作
                     account = api_ed.getText().toString();
-                    requestgithub();
+                    loginGithub();
                     return false;
                 }
                 return false;
@@ -84,11 +80,12 @@ public class MainFragment extends Fragment {
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
     }
 
-    private void requestgithub() {
+    private void loginGithub() {
         PostApi postApi = AppClientManager.getGithubInstance().create(PostApi.class);
+        viewModel = new ViewModel(getActivity().getApplication());
         Observable<List<GithubRepo>> observable = postApi.getGithubRX(account);
         observable.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())  // （新观察者）切换到主线程
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<List<GithubRepo>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
@@ -97,7 +94,7 @@ public class MainFragment extends Fragment {
 
                     @Override
                     public void onNext(List<GithubRepo> githubRepos) {
-                        Log.i(TAG, "回傳的資料" + githubRepos.toString());
+                        //Log.i(TAG, "回傳的資料" + githubRepos.toString());
                         for (int i = 0; i < githubRepos.size(); i++) {
                             name_list.add(githubRepos.get(i).getName());
                         }
