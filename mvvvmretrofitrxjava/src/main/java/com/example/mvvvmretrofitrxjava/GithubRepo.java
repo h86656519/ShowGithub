@@ -1,11 +1,21 @@
 package com.example.mvvvmretrofitrxjava;
 
+import androidx.lifecycle.LiveData;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class GithubRepo implements Serializable {
+
+/**
+ * 改用繼承LiveData
+ * 好處:1.UI和資料保持一致，LiveData是使用觀察者模式，當LIfeCycle的狀態改變，LiveData會通知觀察者更新UI
+ *     2.避免Memory Leak 及 Activity處於stop狀態而造成閃退
+ *     3.在非avtivity focus 的情況下部會師到通知，只有在onStarted 和 onResumed 下才會自動更新資料
+ *     4.不用處理跟生命週期有關的問題
+ * */
+public class GithubRepo extends LiveData<GithubRepo> implements Serializable {
     @SerializedName("id") //gson 是透過這個去取得資料
     @Expose //Expose是用來聲明類成員是否需要進行JSON 的序列化或反序列化
     private String id = "";

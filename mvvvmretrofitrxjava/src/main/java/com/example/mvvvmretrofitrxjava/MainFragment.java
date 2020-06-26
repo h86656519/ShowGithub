@@ -60,6 +60,8 @@ public class MainFragment extends Fragment {
                 replaceFragment(R.id.main_layout, repoFragment, true);
             }
         });
+
+        viewModel = new ViewModel(getActivity().getApplication());
         return view;
     }
 
@@ -81,14 +83,14 @@ public class MainFragment extends Fragment {
     }
 
     private void loginGithub() {
-        PostApi postApi = AppClientManager.getGithubInstance().create(PostApi.class);
-        viewModel = new ViewModel(getActivity().getApplication());
-        Observable<List<GithubRepo>> observable = postApi.getGithubRX(account);
-        observable.subscribeOn(Schedulers.io())
+//        1.將準備retrofit 的動作給viewModel 來做
+//        2.viewModel 直接就回傳
+        viewModel.login(account).
+                subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<List<GithubRepo>>() {
+                .subscribe(new Observer<List<GithubRepo>>() { //接回login回傳的資料
                     @Override
-                    public void onSubscribe(Disposable d) {
+                    public void onu06Subscribe(Disposable d) {
                         Log.i(TAG, "onSubscribe: 開始連接");
                     }
 
