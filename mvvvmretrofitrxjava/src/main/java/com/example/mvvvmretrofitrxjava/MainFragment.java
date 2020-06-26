@@ -90,7 +90,7 @@ public class MainFragment extends Fragment {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<List<GithubRepo>>() { //接回login回傳的資料
                     @Override
-                    public void onu06Subscribe(Disposable d) {
+                    public void onSubscribe(Disposable d) {
                         Log.i(TAG, "onSubscribe: 開始連接");
                     }
 
