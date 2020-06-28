@@ -9,14 +9,17 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.mvvvmretrofitrxjava.databinding.ListlayoutBinding;
+
 import java.util.ArrayList;
+import java.util.List;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implements View.OnClickListener {
     ArrayList<String> name_list = new ArrayList<>();
     private final String TAG = "MyAdapter";
     private OnItemClickListener mOnItemClickListener = null;
     Context Mycontext;
-
+    List<GithubRepo> githubReposList = new ArrayList<>();
     public MyAdapter(Context context) {
         this.Mycontext = context;
     }
@@ -24,31 +27,42 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implem
     public void setNames(ArrayList<String> nameslist) {
         name_list = nameslist;
     }
+    public void setGithubRepos(List<GithubRepo> githubRepos){
+        this.githubReposList = githubRepos;
+    }
 
     @Override
     public MyAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.listlayout, viewGroup, false);
-        view.setOnClickListener(this);
-        return new MyAdapter.ViewHolder(view);
+//        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.listlayout, viewGroup, false);
+//        view.setOnClickListener(this);
+//        return new MyAdapter.ViewHolder(view);
+
+        LayoutInflater layoutInflater = LayoutInflater.from(viewGroup.getContext());
+        ListlayoutBinding binding = ListlayoutBinding.inflate(layoutInflater, viewGroup, false);
+        return new MyAdapter.ViewHolder(binding);
     }
 
     @Override
     public void onBindViewHolder(final MyAdapter.ViewHolder holder, final int position) {
-        String name = name_list.get(position);
-        holder.name_holder.setText(name);
-        if (highlightIndex == position) {
-            holder.name_holder.setTextColor(Color.RED);
-        } else {
-            holder.name_holder.setTextColor(Color.BLACK);
-        }
+//        String name = name_list.get(position);
+//        String name = githubReposList.get(position).getName();
+        GithubRepo repo = githubReposList.get(position);
+        holder.bind(repo);
 
-        holder.view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                Log.i(TAG, "view position : " + position);
+//        holder.name_holder.setText(name);
+//        if (highlightIndex == position) {
+//            holder.name_holder.setTextColor(Color.RED);
+//        } else {
+//            holder.name_holder.setTextColor(Color.BLACK);
+//        }
 
-            }
-        });
+//        holder.view.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+////                Log.i(TAG, "view position : " + position);
+//
+//            }
+//        });
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,22 +81,39 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implem
 
     @Override
     public int getItemCount() {
-        return name_list.size();
+//        return name_list.size();
+        return githubReposList.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
         private TextView name_holder;
         private View view;
+        /**
+         *  ListlayoutBinding 是自動生成的，
+         *  是以xmlLayout名字(就是一開始 "Convert to data binding layout" 的那個mxl ) + Binding 去拼成的
+         * */
+        private final ListlayoutBinding binding;
 
-        ViewHolder(final View itemView) {
-            super(itemView);
+//        ViewHolder(final View itemView) {
+//            super(itemView);
+//            view = itemView;
+//            this.name_holder = (TextView) itemView.findViewById(R.id.name);
+//        }
+
+        ViewHolder(ListlayoutBinding binding){
+            super(binding.getRoot());
+            this.binding = binding;
             view = itemView;
-            this.name_holder = (TextView) itemView.findViewById(R.id.name);
         }
 
-//        public void setOnItemClick(View.OnClickListener l) {
-//            this.view.setOnClickListener(l);
-//        }
+        void bind(GithubRepo repo) {
+            binding.setRepo(repo);
+            binding.executePendingBindings();
+        }
+
+        public void setOnItemClick(View.OnClickListener l) {
+            this.view.setOnClickListener(l);
+        }
 
 
     }

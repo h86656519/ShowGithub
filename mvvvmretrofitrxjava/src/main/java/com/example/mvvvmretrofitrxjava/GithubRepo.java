@@ -22,7 +22,7 @@ public class GithubRepo extends LiveData<GithubRepo> implements Serializable {
 
     @SerializedName("name")
     @Expose
-    private String name = "";
+    public String name = "";
     @SerializedName("node_id")
     @Expose
     private String node_id = "";

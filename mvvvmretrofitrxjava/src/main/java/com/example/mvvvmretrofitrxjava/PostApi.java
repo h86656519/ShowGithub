@@ -28,8 +28,7 @@ public interface PostApi {
     Call<List<GithubRepo>> getGithubIssue(@Path(value = "user_id", encoded = true) String userId,
                                           @Path(value = "repos", encoded = true) String repos);
 
-    @GET("appexam1.htm")
-    Call<Repo> getJsonArray();
+
 
 
 //    @POST("{user_id}/Internet_test/issues/1/comments")

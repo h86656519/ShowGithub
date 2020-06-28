@@ -9,11 +9,11 @@ import java.util.List;
 
 import io.reactivex.Observable;
 
-public class ViewModel extends AndroidViewModel {
+public class MyViewModel extends AndroidViewModel {
     PostApi postApi;
     Observable<List<GithubRepo>> data;
 
-    public ViewModel(@NonNull Application application) {
+    public MyViewModel(@NonNull Application application) {
         super(application);
         postApi = AppClientManager.getGithubInstance().create(PostApi.class);
     }
