@@ -15,14 +15,14 @@ import java.io.Serializable;
  *     3.在非avtivity focus 的情況下部會師到通知，只有在onStarted 和 onResumed 下才會自動更新資料
  *     4.不用處理跟生命週期有關的問題
  * */
-public class GithubRepo extends LiveData<GithubRepo> implements Serializable {
+public class GithubRepo  implements Serializable {
     @SerializedName("id") //gson 是透過這個去取得資料
     @Expose //Expose是用來聲明類成員是否需要進行JSON 的序列化或反序列化
     private String id = "";
 
     @SerializedName("name")
     @Expose
-    public String name = "";
+    private String name = "";
     @SerializedName("node_id")
     @Expose
     private String node_id = "";
