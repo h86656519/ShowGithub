@@ -36,11 +36,10 @@ public class MainFragment extends Fragment {
     private EditText api_ed;
     View view;
     private String account;
-    private ArrayList<String> name_list = new ArrayList<>();
     private MyViewModel myViewModel;
     MyViewModelFactory factory;
     FragmentMainBinding binding;
-
+    List<GithubRepo> githubReposList = new ArrayList<>();
     public MainFragment() {
     }
 
@@ -52,7 +51,7 @@ public class MainFragment extends Fragment {
         myAdapter = new MyAdapter(getActivity());
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(),
                 RecyclerView.VERTICAL, false);
-        recyclerView = binding.recyclerView;
+        recyclerView = binding.myRecyclerView; //重新綁view
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(myAdapter);
         myAdapter.setOnItemClickListener(new MyAdapter.OnItemClickListener() {
@@ -60,7 +59,7 @@ public class MainFragment extends Fragment {
             public void onItemClick(View view, int position) {
                 RepoFragment repoFragment = RepoFragment.getInstance();
                 Bundle bundle = new Bundle();
-                bundle.putString("reporsname", name_list.get(position));
+                bundle.putString("reporsname", githubReposList.get(position).getName());
                 bundle.putString("account", account);
                 repoFragment.setArguments(bundle); //把資料加進 fragment
                 replaceFragment(R.id.main_layout, repoFragment, true);
@@ -108,11 +107,7 @@ public class MainFragment extends Fragment {
 
                     @Override
                     public void onNext(List<GithubRepo> githubRepos) {
-                        //Log.i(TAG, "回傳的資料" + githubRepos.toString());
-//                        for (int i = 0; i < githubRepos.size(); i++) {
-//                            name_list.add(githubRepos.get(i).getName());
-//                        }
-                        //myAdapter.setNames(name_list);
+                        githubReposList = githubRepos;
                         myAdapter.setGithubRepos(githubRepos);
                         myAdapter.notifyDataSetChanged();
                     }

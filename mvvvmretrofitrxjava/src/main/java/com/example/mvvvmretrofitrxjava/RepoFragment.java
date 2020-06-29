@@ -37,7 +37,7 @@ public class RepoFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-       // RepoFragmentView = inflater.inflate(R.layout.fragment_repo, container, false);
+        RepoFragmentView = inflater.inflate(R.layout.fragment_repo, container, false);
 
         bundle = this.getArguments();
         account = bundle.getString("account");
@@ -84,9 +84,9 @@ public class RepoFragment extends Fragment {
     }
 
     public void initView() {
-//        reporsname_tv = RepoFragmentView.findViewById(R.id.reporsname);
-//        reporsname_tv.setText(reporsName);
-//        issueRecyclerView = (RecyclerView) RepoFragmentView.findViewById(R.id.issueRecyclerView);
+        reporsname_tv = RepoFragmentView.findViewById(R.id.reporsname);
+        reporsname_tv.setText(reporsName);
+        issueRecyclerView = (RecyclerView) RepoFragmentView.findViewById(R.id.issueRecyclerView);
     }
 
 
