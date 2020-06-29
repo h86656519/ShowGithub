@@ -15,19 +15,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implements View.OnClickListener {
-    ArrayList<String> name_list = new ArrayList<>();
+//    ArrayList<String> name_list = new ArrayList<>(); 改傳物件(GithubRepo)了，故用不到了，可以刪
+    List<GithubRepo> githubReposList = new ArrayList<>();
     private final String TAG = "MyAdapter";
     private OnItemClickListener mOnItemClickListener = null;
     Context Mycontext;
-    List<GithubRepo> githubReposList = new ArrayList<>();
+
+
     public MyAdapter(Context context) {
         this.Mycontext = context;
     }
 
-    public void setNames(ArrayList<String> nameslist) {
-        name_list = nameslist;
-    }
-    public void setGithubRepos(List<GithubRepo> githubRepos){
+//    public void setNames(ArrayList<String> nameslist) {
+//        name_list = nameslist;
+//    }
+
+    public void setGithubRepos(List<GithubRepo> githubRepos) {
         this.githubReposList = githubRepos;
     }
 
@@ -44,17 +47,19 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implem
 
     @Override
     public void onBindViewHolder(final MyAdapter.ViewHolder holder, final int position) {
-//        String name = name_list.get(position);
-//        String name = githubReposList.get(position).getName();
-        GithubRepo repo = githubReposList.get(position);
-        holder.bind(repo);
+//        String name = githubReposList.get(position).getName(); //before
+        GithubRepo repo = githubReposList.get(position); //after
 
-//        holder.name_holder.setText(name);
-//        if (highlightIndex == position) {
-//            holder.name_holder.setTextColor(Color.RED);
-//        } else {
-//            holder.name_holder.setTextColor(Color.BLACK);
-//        }
+//        holder.name_holder.setText(name); //before
+        holder.bind(repo);  //after
+
+        if (highlightIndex == position) {
+            //    holder.name_holder.setTextColor(Color.RED); //before
+            holder.binding.name.setTextColor(Color.RED); //after 改用binding
+        } else {
+            //  holder.name_holder.setTextColor(Color.BLACK);
+            holder.binding.name.setTextColor(Color.BLACK);
+        }
 
 //        holder.view.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -68,9 +73,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implem
             @Override
             public void onClick(View v) {
 //                highlightIndex = position;
-
-
-                mOnItemClickListener.onItemClick(v,position);
+                mOnItemClickListener.onItemClick(v, position);
                 hilightouch(position);
                 notifyDataSetChanged();
             }
@@ -89,26 +92,27 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implem
         private TextView name_holder;
         private View view;
         /**
-         *  ListlayoutBinding 是自動生成的，
-         *  是以xmlLayout名字(就是一開始 "Convert to data binding layout" 的那個mxl ) + Binding 去拼成的
-         * */
+         * ListlayoutBinding 是自動生成的，
+         * 是以xmlLayout名字(就是一開始 "Convert to data binding layout" 的那個mxl ) + Binding 去拼成的
+         */
         private final ListlayoutBinding binding;
-
+//before
 //        ViewHolder(final View itemView) {
 //            super(itemView);
 //            view = itemView;
 //            this.name_holder = (TextView) itemView.findViewById(R.id.name);
 //        }
-
-        ViewHolder(ListlayoutBinding binding){
+//after
+        ViewHolder(ListlayoutBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
             view = itemView;
         }
 
+        //
         void bind(GithubRepo repo) {
             binding.setRepo(repo);
-            binding.executePendingBindings();
+            binding.executePendingBindings(); //立刻綁定data，必寫，不然數據會對不上view，會報錯
         }
 
         public void setOnItemClick(View.OnClickListener l) {

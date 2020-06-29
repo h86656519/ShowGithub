@@ -57,12 +57,12 @@ public class MainFragment extends Fragment {
         myAdapter.setOnItemClickListener(new MyAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                RepoFragment repoFragment = RepoFragment.getInstance();
-                Bundle bundle = new Bundle();
-                bundle.putString("reporsname", githubReposList.get(position).getName());
-                bundle.putString("account", account);
-                repoFragment.setArguments(bundle); //把資料加進 fragment
-                replaceFragment(R.id.main_layout, repoFragment, true);
+//                RepoFragment repoFragment = RepoFragment.getInstance();
+//                Bundle bundle = new Bundle();
+//                bundle.putString("reporsname", githubReposList.get(position).getName());
+//                bundle.putString("account", account);
+//                repoFragment.setArguments(bundle); //把資料加進 fragment
+//                replaceFragment(R.id.main_layout, repoFragment, true);
             }
         });
 
