@@ -1,5 +1,7 @@
 package com.example.mvvvmretrofitrxjava;
 
+import androidx.lifecycle.MutableLiveData;
+
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -22,6 +24,9 @@ public interface PostApi {
 
     @GET("users/{user_id}/repos")
     Observable<List<GithubRepo>> getGithubRX(@Path(value = "user_id", encoded = true) String userId); // Call<List<GithubRepo>> = 資料接回來的型態
+
+    @GET("users/{user_id}/repos")
+    MutableLiveData<List<GithubRepo>> getGithubRXlive(@Path(value = "user_id", encoded = true) String userId); // Call<List<GithubRepo>> = 資料接回來的型態
 
     @GET("repos/{user_id}/{repos}/issues")
         //user_id 要跟 value 的 "user_id" 名稱要一樣

@@ -28,7 +28,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-
+// TODO: 2020/6/29 1.google sample 參考 2.有沒有東西還要移到viewModel?  > 將rx改到viewModel8
 public class MainFragment extends Fragment {
     private static final String TAG = "MainFragment";
     private RecyclerView recyclerView;
@@ -38,8 +38,9 @@ public class MainFragment extends Fragment {
     private String account;
     private MyViewModel myViewModel;
     MyViewModelFactory factory;
-    FragmentMainBinding binding;
+    FragmentMainBinding binding; //FragmentMainBinding 自動產生的，在fragment的話，命名應該會是fragmentXXXBinding，要試一下啊
     List<GithubRepo> githubReposList = new ArrayList<>();
+
     public MainFragment() {
     }
 
@@ -48,23 +49,12 @@ public class MainFragment extends Fragment {
                              Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_main, container, false);
         initView();
-        myAdapter = new MyAdapter(getActivity());
+
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(),
                 RecyclerView.VERTICAL, false);
         recyclerView = binding.myRecyclerView; //重新綁view
         recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setAdapter(myAdapter);
-        myAdapter.setOnItemClickListener(new MyAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-//                RepoFragment repoFragment = RepoFragment.getInstance();
-//                Bundle bundle = new Bundle();
-//                bundle.putString("reporsname", githubReposList.get(position).getName());
-//                bundle.putString("account", account);
-//                repoFragment.setArguments(bundle); //把資料加進 fragment
-//                replaceFragment(R.id.main_layout, repoFragment, true);
-            }
-        });
+
 
 //        viewModel = new ViewModel(getActivity().getApplication()); //不可以這樣寫，要用ViewModelProvider 來取得viewModle，直接new 出生命週期就關聯不起來
         //不用工廠模式
@@ -72,7 +62,19 @@ public class MainFragment extends Fragment {
         //採用工廠模式
         factory = new MyViewModelFactory();                           //factory 要 implements 或 extends ViewModelProvider.Factory
         myViewModel = new ViewModelProvider(MainFragment.this, factory).get(MyViewModel.class);
-
+        myAdapter = new MyAdapter(getActivity(), myViewModel);
+        myAdapter.setOnItemClickListener(new MyAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                RepoFragment repoFragment = RepoFragment.getInstance();
+                Bundle bundle = new Bundle();
+                bundle.putString("reporsname", myViewModel.datalive.getValue().get(position).getName());
+                bundle.putString("account", account);
+                repoFragment.setArguments(bundle); //把資料加進 fragment
+                replaceFragment(R.id.main_layout, repoFragment, true);
+            }
+        });
+        recyclerView.setAdapter(myAdapter);
         return binding.getRoot();
     }
 
@@ -96,33 +98,7 @@ public class MainFragment extends Fragment {
     private void loginGithub() {
 //        1.將準備retrofit 的動作給viewModel 來做
 //        2.viewModel 直接就回傳
-        myViewModel.login(account).
-                subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<List<GithubRepo>>() { //接回login回傳的資料
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                        Log.i(TAG, "onSubscribe: 開始連接");
-                    }
-
-                    @Override
-                    public void onNext(List<GithubRepo> githubRepos) {
-                        githubReposList = githubRepos;
-                        myAdapter.setGithubRepos(githubRepos);
-                        myAdapter.notifyDataSetChanged();
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.i(TAG, "onError: 連接失敗" + e);
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        Log.i(TAG, "onComplete: 連接完成");
-                    }
-                });
-
+        myViewModel.getData(account, myAdapter);
     }
 
 

@@ -42,7 +42,6 @@ public class AppClientManager {
                 .baseUrl(Config.baseURL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-
                 .client(okHttpClient)
                 .build();
         return githubManager.retrofit;

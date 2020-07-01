@@ -15,24 +15,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implements View.OnClickListener {
-//    ArrayList<String> name_list = new ArrayList<>(); 改傳物件(GithubRepo)了，故用不到了，可以刪
-    List<GithubRepo> githubReposList = new ArrayList<>();
+    //    ArrayList<String> name_list = new ArrayList<>(); 改傳物件(GithubRepo)了，故用不到了，可以刪
+//    List<GithubRepo> githubReposList = new ArrayList<>();
+    List<GithubRepo> githubReposList;
     private final String TAG = "MyAdapter";
     private OnItemClickListener mOnItemClickListener = null;
     Context Mycontext;
+    MyViewModel myViewModel;
 
-
-    public MyAdapter(Context context) {
+    public MyAdapter(Context context, MyViewModel viewModel) {
         this.Mycontext = context;
+        myViewModel = viewModel;
     }
 
 //    public void setNames(ArrayList<String> nameslist) {
 //        name_list = nameslist;
 //    }
 
-    public void setGithubRepos(List<GithubRepo> githubRepos) {
-        this.githubReposList = githubRepos;
-    }
+//    public void setGithubRepos(List<GithubRepo> githubRepos) {
+//        this.githubReposList = githubRepos;
+//    }
 
     @Override
     public MyAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
@@ -84,8 +86,12 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implem
 
     @Override
     public int getItemCount() {
-//        return name_list.size();
-        return githubReposList.size();
+        int size = 0;
+        if (myViewModel.datalive.getValue() != null) {
+            size = myViewModel.datalive.getValue().size();
+            githubReposList = myViewModel.datalive.getValue();
+        }
+        return size;
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
@@ -96,7 +102,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implem
          * 是以xmlLayout名字(就是一開始 "Convert to data binding layout" 的那個mxl ) + Binding 去拼成的
          */
         private final ListlayoutBinding binding;
-//before
+
+        //before
 //        ViewHolder(final View itemView) {
 //            super(itemView);
 //            view = itemView;
