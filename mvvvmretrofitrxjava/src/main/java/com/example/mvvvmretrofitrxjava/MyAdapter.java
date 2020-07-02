@@ -23,6 +23,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implem
     Context Mycontext;
     MyViewModel myViewModel;
 
+
     public MyAdapter(Context context, MyViewModel viewModel) {
         this.Mycontext = context;
         myViewModel = viewModel;
@@ -153,4 +154,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implem
             highlightIndex = touch;
         }
     }
+
+
 }

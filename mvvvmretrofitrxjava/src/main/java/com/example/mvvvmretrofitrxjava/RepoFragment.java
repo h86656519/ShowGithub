@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -31,18 +33,20 @@ public class RepoFragment extends Fragment {
     private ArrayList<String> comments_list = new ArrayList<>();
     private RecyclerView issueRecyclerView;
 
-    public RepoFragment() { }
+    public RepoFragment() {
+    }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         RepoFragmentView = inflater.inflate(R.layout.fragment_repo, container, false);
-
         bundle = this.getArguments();
         account = bundle.getString("account");
-        reporsName = bundle.getString("reporsname");
-        Log.i(TAG, "account " + account + "reporsName " + reporsName);
+
+//        reporsName = bundle.getString("reporsname"); 改用共享同一個viewModel 的方式來得到資料
+        MyViewModel model = ViewModelProviders.of(getActivity()).get(MyViewModel.class);
+        reporsName = model.datalive.getValue().get(model.getSelectItem()).getFull_name();
 
         initView();
 

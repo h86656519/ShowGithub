@@ -20,15 +20,17 @@ public class MyViewModel extends AndroidViewModel {
     private final String TAG = "MyViewModel";
     PostApi postApi;
     Observable<List<GithubRepo>> data;
-    MutableLiveData<List<GithubRepo>> datalive  = new MutableLiveData();
+    MutableLiveData<List<GithubRepo>> datalive = new MutableLiveData();
+    private int selectItem;
 
-    public Boolean empty(){
-      if (data != null){
-          return true;
-      }else {
-          return false;
-      }
+    public Boolean empty() {
+        if (data != null) {
+            return true;
+        } else {
+            return false;
+        }
     }
+
     public MyViewModel(@NonNull Application application) {
         super(application);
         postApi = AppClientManager.getGithubInstance().create(PostApi.class);
@@ -39,6 +41,7 @@ public class MyViewModel extends AndroidViewModel {
         return data;
     }
 
+    //練習是沒有return的需求，寫void 就可以了
     public MutableLiveData<List<GithubRepo>> getData(String account, final MyAdapter adapter) {
         data = postApi.getGithubRX(account);
         data.subscribeOn(Schedulers.io())
@@ -53,7 +56,7 @@ public class MyViewModel extends AndroidViewModel {
                     public void onNext(List<GithubRepo> githubRepos) {
 //                        datalive.setValue(githubRepos);
                         datalive.setValue(githubRepos);
-                      //  adapter.setGithubRepos(githubRepos);
+                        //  adapter.setGithubRepos(githubRepos);
                         adapter.notifyDataSetChanged();
                     }
 
@@ -68,6 +71,13 @@ public class MyViewModel extends AndroidViewModel {
                     }
                 });
         return datalive;
-//        return data;
+    }
+
+    public void setSelect(int item) {
+        this.selectItem = item;
+    }
+
+    public int getSelectItem() {
+        return selectItem;
     }
 }
