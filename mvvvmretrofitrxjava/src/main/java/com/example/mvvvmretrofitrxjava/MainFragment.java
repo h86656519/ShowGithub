@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -28,7 +29,11 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-//實作功能:recycleView 沒資料時就不顯示gone
+/**
+ * 實作功能:
+ * 1.recycleView 沒資料時就不顯示gone
+ * 2.模擬loaging，接完資料後睡3秒，再關掉 ProgressBar
+ **/
 public class MainFragment extends Fragment {
     private static final String TAG = "MainFragment";
     private RecyclerView recyclerView;
@@ -90,6 +95,7 @@ public class MainFragment extends Fragment {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if (event.getAction() == KeyEvent.ACTION_DOWN
                         && event.getKeyCode() == KeyEvent.KEYCODE_ENTER) { //按下ENTER 的動作
+                    //delay();
                     account = api_ed.getText().toString();
                     loginGithub();
                     return false;

@@ -26,8 +26,9 @@ public class MyViewModel extends AndroidViewModel {
     Observable<List<GithubRepo>> data;
     Observable observable;
     MutableLiveData<List<GithubRepo>> datalive = new MutableLiveData();
-//    private int selectItem;
+    //    private int selectItem;
     public ObservableBoolean isDataEmpty = new ObservableBoolean(false);
+    public ObservableBoolean isLoading = new ObservableBoolean(false);
     public ObservableInt selectItem = new ObservableInt();
 
     public MyViewModel(@NonNull Application application) {
@@ -48,11 +49,20 @@ public class MyViewModel extends AndroidViewModel {
                 .subscribe(new Observer<List<GithubRepo>>() { //接回login回傳的資料
                     @Override
                     public void onSubscribe(Disposable d) {
+
                         Log.i(TAG, "onSubscribe: 開始連接");
+                        isLoading.set(true);
+
                     }
 
                     @Override
                     public void onNext(List<GithubRepo> githubRepos) {
+                        try {
+                            Thread.sleep(3000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        isLoading.set(false);
                         isDataEmpty.set(true); //顯示recycleView
 //                        datalive.setValue(githubRepos);
                         datalive.setValue(githubRepos);
