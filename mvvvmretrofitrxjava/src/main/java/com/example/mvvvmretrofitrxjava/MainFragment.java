@@ -28,7 +28,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-// TODO: 2020/6/29 1.google sample 參考 2.有沒有東西還要移到viewModel?  > 將rx改到viewModel8
+//實作功能:recycleView 沒資料時就不顯示gone
 public class MainFragment extends Fragment {
     private static final String TAG = "MainFragment";
     private RecyclerView recyclerView;
@@ -48,6 +48,7 @@ public class MainFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_main, container, false);
+        binding.setLifecycleOwner(this);//綁定生命週期
         initView();
 
 //        viewModel = new ViewModel(getActivity().getApplication()); //不可以這樣寫，要用ViewModelProvider 來取得viewModle，直接new 出生命週期就關聯不起來
@@ -55,7 +56,8 @@ public class MainFragment extends Fragment {
 //        myViewModel = new ViewModelProvider(MainFragment.this).get(MyViewModel.class); //如果有共用同一個viewModel 的話，就不能綁在自己身上，不然另一個fragment 會get錯
         myViewModel = new ViewModelProvider(getActivity()).get(MyViewModel.class); //要綁到activity
         //因為數據就在model裡儲存了，所以就不在繞一圈接到activity 再給factory再去產生viewNodel，所以不採用factory 模式
-        //工廠模式:ViewModelProvider.Factory 每次都會重新創建一個新的 ViewModel
+
+        /**工廠模式:ViewModelProvider.Factory 每次都會重新創建一個新的 ViewModel */
 //        factory = new MyViewModelFactory(); //也可以透過這樣傳參數給viewModel ???
 //        myViewModel = new ViewModelProvider(MainFragment.this, factory).get(MyViewModel.class);
 //        myViewModel = new ViewModelProvider.AndroidViewModelFactory(getActivity().getApplication())
@@ -66,8 +68,8 @@ public class MainFragment extends Fragment {
             @Override
             public void onItemClick(View view, int position) {
                 RepoFragment repoFragment = RepoFragment.getInstance();
-                myViewModel.setSelect(position);
-//                不用bundle 傳，改用共享同一個modelModel
+//                myViewModel.setSelect(position); //reporsname 用viewModel 共享方式得到資料
+                myViewModel.selectItem.set(position);
                 Bundle bundle = new Bundle();
 //                bundle.putString("reporsname", myViewModel.datalive.getValue().get(position).getName());
                 bundle.putString("account", account);
@@ -77,6 +79,7 @@ public class MainFragment extends Fragment {
             }
         });
         recyclerView.setAdapter(myAdapter);
+        binding.setViewModel(myViewModel); //要設定這個，xml 裡的@{}，才會有作用
         return binding.getRoot();
     }
 
@@ -99,6 +102,7 @@ public class MainFragment extends Fragment {
                 RecyclerView.VERTICAL, false);
         //  recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView); 一般寫法
         recyclerView = binding.myRecyclerView; //因採用livedata，故需要這樣綁view
+
         recyclerView.setLayoutManager(linearLayoutManager);
     }
 

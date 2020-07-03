@@ -4,7 +4,11 @@ import android.app.Application;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.databinding.BindingAdapter;
+import androidx.databinding.ObservableBoolean;
+import androidx.databinding.ObservableInt;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 
@@ -20,16 +24,11 @@ public class MyViewModel extends AndroidViewModel {
     private final String TAG = "MyViewModel";
     PostApi postApi;
     Observable<List<GithubRepo>> data;
+    Observable observable;
     MutableLiveData<List<GithubRepo>> datalive = new MutableLiveData();
-    private int selectItem;
-
-    public Boolean empty() {
-        if (data != null) {
-            return true;
-        } else {
-            return false;
-        }
-    }
+//    private int selectItem;
+    public ObservableBoolean isDataEmpty = new ObservableBoolean(false);
+    public ObservableInt selectItem = new ObservableInt();
 
     public MyViewModel(@NonNull Application application) {
         super(application);
@@ -43,8 +42,8 @@ public class MyViewModel extends AndroidViewModel {
 
     //練習是沒有return的需求，寫void 就可以了
     public MutableLiveData<List<GithubRepo>> getData(String account, final MyAdapter adapter) {
-        data = postApi.getGithubRX(account);
-        data.subscribeOn(Schedulers.io())
+        observable = postApi.getGithubRX(account);
+        observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<List<GithubRepo>>() { //接回login回傳的資料
                     @Override
@@ -54,6 +53,7 @@ public class MyViewModel extends AndroidViewModel {
 
                     @Override
                     public void onNext(List<GithubRepo> githubRepos) {
+                        isDataEmpty.set(true); //顯示recycleView
 //                        datalive.setValue(githubRepos);
                         datalive.setValue(githubRepos);
                         //  adapter.setGithubRepos(githubRepos);
@@ -73,11 +73,11 @@ public class MyViewModel extends AndroidViewModel {
         return datalive;
     }
 
-    public void setSelect(int item) {
-        this.selectItem = item;
-    }
-
-    public int getSelectItem() {
-        return selectItem;
-    }
+//    public void setSelect(int item) {
+//        this.selectItem = item;
+//    }
+//
+//    public int getSelectItem() {
+//        return selectItem;
+//    }
 }

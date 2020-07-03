@@ -46,7 +46,10 @@ public class RepoFragment extends Fragment {
 
 //        reporsName = bundle.getString("reporsname"); 改用共享同一個viewModel 的方式來得到資料
         MyViewModel model = ViewModelProviders.of(getActivity()).get(MyViewModel.class);
-        reporsName = model.datalive.getValue().get(model.getSelectItem()).getFull_name();
+        //方法一:8
+//        reporsName = model.datalive.getValue().get(model.getSelectItem()).getFull_name();
+        //方法二:
+        reporsName = model.datalive.getValue().get(model.selectItem.get()).getFull_name();
 
         initView();
 
