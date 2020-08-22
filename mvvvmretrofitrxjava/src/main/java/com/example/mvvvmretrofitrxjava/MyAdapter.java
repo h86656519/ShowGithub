@@ -16,17 +16,15 @@ import java.util.List;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implements View.OnClickListener {
     //    ArrayList<String> name_list = new ArrayList<>(); 改傳物件(GithubRepo)了，故用不到了，可以刪
-//    List<GithubRepo> githubReposList = new ArrayList<>();
-    List<GithubRepo> githubReposList;
+    List<GithubRepo> githubReposList = new ArrayList<>();
+//    List<GithubRepo> githubReposList;
     private final String TAG = "MyAdapter";
     private OnItemClickListener mOnItemClickListener = null;
     Context Mycontext;
-    MyViewModel myViewModel;
 
 
-    public MyAdapter(Context context, MyViewModel viewModel) {
+    public MyAdapter(Context context) {
         this.Mycontext = context;
-        myViewModel = viewModel;
     }
 
 //    public void setNames(ArrayList<String> nameslist) {
@@ -87,12 +85,17 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implem
 
     @Override
     public int getItemCount() {
-        int size = 0;
-        if (myViewModel.datalive.getValue() != null) {
-            size = myViewModel.datalive.getValue().size();
-            githubReposList = myViewModel.datalive.getValue();
-        }
-        return size;
+//        int size = 0;
+//        if (myViewModel.datalive.getValue() != null) {
+//            size = myViewModel.datalive.getValue().size();
+//            githubReposList = myViewModel.datalive.getValue();
+//        }
+        return githubReposList.size();
+    }
+
+    public void refresh(List<GithubRepo> githubRepos) {
+        this.githubReposList = githubRepos;
+        notifyDataSetChanged();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {

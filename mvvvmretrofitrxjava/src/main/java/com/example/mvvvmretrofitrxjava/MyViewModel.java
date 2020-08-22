@@ -42,7 +42,7 @@ public class MyViewModel extends AndroidViewModel {
     }
 
     //練習是沒有return的需求，寫void 就可以了
-    public MutableLiveData<List<GithubRepo>> getData(String account, final MyAdapter adapter) {
+    public MutableLiveData<List<GithubRepo>> getData(String account) {
         observable = postApi.getGithubRX(account);
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -67,7 +67,7 @@ public class MyViewModel extends AndroidViewModel {
 //                        datalive.setValue(githubRepos);
                         datalive.setValue(githubRepos);
                         //  adapter.setGithubRepos(githubRepos);
-                        adapter.notifyDataSetChanged();
+//                        adapter.notifyDataSetChanged();
                     }
 
                     @Override

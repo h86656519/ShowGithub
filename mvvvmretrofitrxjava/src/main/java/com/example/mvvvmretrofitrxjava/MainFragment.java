@@ -2,16 +2,17 @@ package com.example.mvvvmretrofitrxjava;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Handler;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,15 +20,9 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.example.mvvvmretrofitrxjava.databinding.FragmentMainBinding;
-import com.example.mvvvmretrofitrxjava.databinding.ListlayoutBinding;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * 實作功能:
@@ -39,7 +34,6 @@ public class MainFragment extends Fragment {
     private RecyclerView recyclerView;
     private MyAdapter myAdapter;
     private EditText api_ed;
-    View view;
     private String account;
     private MyViewModel myViewModel;
     MyViewModelFactory factory; //MyViewModelFactory 要 implements 或 extends ViewModelProvider.Factory
@@ -54,12 +48,19 @@ public class MainFragment extends Fragment {
                              Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_main, container, false);
         binding.setLifecycleOwner(this);//綁定生命週期
+        return binding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
         initView();
 
 //        viewModel = new ViewModel(getActivity().getApplication()); //不可以這樣寫，要用ViewModelProvider 來取得viewModle，直接new 出生命週期就關聯不起來
         //非工廠模式，直接就用provider 建立viewModel
 //        myViewModel = new ViewModelProvider(MainFragment.this).get(MyViewModel.class); //如果有共用同一個viewModel 的話，就不能綁在自己身上，不然另一個fragment 會get錯
-        myViewModel = new ViewModelProvider(getActivity()).get(MyViewModel.class); //要綁到activity
+        myViewModel = new ViewModelProvider(requireActivity()).get(MyViewModel.class); //要綁到activity
         //因為數據就在model裡儲存了，所以就不在繞一圈接到activity 再給factory再去產生viewNodel，所以不採用factory 模式
 
         /**工廠模式:ViewModelProvider.Factory 每次都會重新創建一個新的 ViewModel */
@@ -68,7 +69,13 @@ public class MainFragment extends Fragment {
 //        myViewModel = new ViewModelProvider.AndroidViewModelFactory(getActivity().getApplication())
 //                .create(MyViewModel.class);
 
-        myAdapter = new MyAdapter(getActivity(), myViewModel);
+        myAdapter = new MyAdapter(requireActivity());
+        myViewModel.datalive.observe(getViewLifecycleOwner(), new Observer<List<GithubRepo>>() {
+            @Override
+            public void onChanged(List<GithubRepo> githubRepos) {
+                myAdapter.refresh(githubRepos);
+            }
+        });
         myAdapter.setOnItemClickListener(new MyAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
@@ -85,7 +92,6 @@ public class MainFragment extends Fragment {
         });
         recyclerView.setAdapter(myAdapter);
         binding.setViewModel(myViewModel); //要設定這個，xml 裡的@{}，才會有作用
-        return binding.getRoot();
     }
 
     private void initView() {
@@ -115,13 +121,13 @@ public class MainFragment extends Fragment {
     private void loginGithub() {
 //        1.將準備retrofit 的動作給viewModel 來做
 //        2.viewModel 直接就回傳
-        myViewModel.getData(account, myAdapter);
+        myViewModel.getData(account);
     }
 
 
     public void replaceFragment(int containerViewId, Fragment fragment, boolean addBackStack) {
         if (fragment != null) {
-            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(containerViewId, fragment);
             if (addBackStack)
