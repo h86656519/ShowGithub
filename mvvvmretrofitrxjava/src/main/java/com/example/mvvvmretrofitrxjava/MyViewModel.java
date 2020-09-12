@@ -26,6 +26,7 @@ public class MyViewModel extends AndroidViewModel {
     Observable<List<GithubRepo>> data;
     Observable observable;
     MutableLiveData<List<GithubRepo>> datalive = new MutableLiveData();
+
     //    private int selectItem;
     public ObservableBoolean isDataEmpty = new ObservableBoolean(false);
     public ObservableBoolean isLoading = new ObservableBoolean(false);
@@ -57,17 +58,18 @@ public class MyViewModel extends AndroidViewModel {
 
                     @Override
                     public void onNext(List<GithubRepo> githubRepos) {
-                        try {
-                            Thread.sleep(3000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                        isLoading.set(false);
-                        isDataEmpty.set(true); //顯示recycleView
+//                        try {
+//                            Thread.sleep(3000);
+//                        } catch (InterruptedException e) {
+//                            e.printStackTrace();
+//                        }
+
 //                        datalive.setValue(githubRepos);
                         datalive.setValue(githubRepos);
                         //  adapter.setGithubRepos(githubRepos);
 //                        adapter.notifyDataSetChanged();
+                        isLoading.set(false);
+                        isDataEmpty.set(true); //顯示recycleView
                     }
 
                     @Override
@@ -83,11 +85,5 @@ public class MyViewModel extends AndroidViewModel {
         return datalive;
     }
 
-//    public void setSelect(int item) {
-//        this.selectItem = item;
-//    }
-//
-//    public int getSelectItem() {
-//        return selectItem;
-//    }
+
 }

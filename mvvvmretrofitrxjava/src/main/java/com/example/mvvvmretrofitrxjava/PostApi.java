@@ -8,10 +8,12 @@ import io.reactivex.Observable;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface PostApi {
     @GET("repos")
@@ -38,7 +40,7 @@ public interface PostApi {
 
 //    @POST("{user_id}/Internet_test/issues/1/comments")
 //    @Headers({"Authorization: token 6c7566e49fc3091d9e5fab0748993d4ec28b8ba7", //用post 的寫法1，寫法2在 AppClientManager
-//            "Content-Type: application/json"})
+//            "Content-Type: application/json"}
 //    Call<GithubRepo> getDynamicGithubByhPost(@Path(value = "user_id", encoded = true) String userId,
 //                                             @Body Comment body);
 //

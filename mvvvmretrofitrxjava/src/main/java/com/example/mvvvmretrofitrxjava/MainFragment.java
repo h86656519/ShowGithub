@@ -41,6 +41,7 @@ public class MainFragment extends Fragment {
     List<GithubRepo> githubReposList = new ArrayList<>();
 
     public MainFragment() {
+
     }
 
     @Override
@@ -60,7 +61,9 @@ public class MainFragment extends Fragment {
 //        viewModel = new ViewModel(getActivity().getApplication()); //不可以這樣寫，要用ViewModelProvider 來取得viewModle，直接new 出生命週期就關聯不起來
         //非工廠模式，直接就用provider 建立viewModel
 //        myViewModel = new ViewModelProvider(MainFragment.this).get(MyViewModel.class); //如果有共用同一個viewModel 的話，就不能綁在自己身上，不然另一個fragment 會get錯
-        myViewModel = new ViewModelProvider(requireActivity()).get(MyViewModel.class); //要綁到activity
+        myViewModel = new ViewModelProvider(requireActivity()).get(MyViewModel.class);
+        //requireActivity() 要綁的是 activity
+        //MainFragment.this > 要綁的是 MainFragment 榜的是誰會決定 ViewModel 何時被銷毀，所以不要亂綁
         //因為數據就在model裡儲存了，所以就不在繞一圈接到activity 再給factory再去產生viewNodel，所以不採用factory 模式
 
         /**工廠模式:ViewModelProvider.Factory 每次都會重新創建一個新的 ViewModel */
@@ -134,5 +137,10 @@ public class MainFragment extends Fragment {
                 fragmentTransaction.addToBackStack("fragment");
             fragmentTransaction.commit();
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 }
