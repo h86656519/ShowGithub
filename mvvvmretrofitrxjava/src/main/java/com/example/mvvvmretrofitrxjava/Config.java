@@ -9,5 +9,6 @@ public class Config {
     public static final String postURL = "https://api.github.com/repos/";
     //    public static final String baseURL =       "https://api.github.com/";
     public static final String baseURL = "https://api-lightning-rod.pixnet.cc/";
+    public static final String baseURL_TEST = "測試環境的URL";
 
 }

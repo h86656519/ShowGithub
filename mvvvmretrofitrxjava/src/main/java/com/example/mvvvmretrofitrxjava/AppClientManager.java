@@ -2,8 +2,9 @@ package com.example.mvvvmretrofitrxjava;
 
 import android.util.Log;
 
-import java.util.concurrent.TimeUnit;
+import androidx.databinding.library.BuildConfig;
 
+import java.util.concurrent.TimeUnit;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -17,43 +18,32 @@ public class AppClientManager {
     private static AppClientManager googleManager = new AppClientManager();
     private static AppClientManager githubManager = new AppClientManager();
     private static Retrofit retrofit;
-    private static OkHttpClient okHttpClient;
-    static OkHttpClient.Builder builder = new OkHttpClient.Builder();
+    private static OkHttpClient.Builder okHttpClient;
+    private static String connnect_url;
 
     //設定 init
     private AppClientManager() {
     }
 
-
-
     public static Retrofit getGithubInstance() {
-        final HttpLoggingInterceptor log = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
-            @Override
-            public void log(@NotNull String s) {
-                Log.i("請求參數", "log: " + s);
-            }
-        });
-        okHttpClient = builder // 新增攔截器
-                .connectTimeout(30, TimeUnit.SECONDS)   // 設置連線Timeout，沒寫預設是10秒
-                .addInterceptor(log) //新增攔截器
-                .build();
+        //沒run 過，還不確定
+        if (BuildConfig.DEBUG) {
+            HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+            logging.level(HttpLoggingInterceptor.Level.BODY);
+            okHttpClient.addInterceptor(logging);
+            connnect_url = Config.baseURL_TEST;
+        } else {
+            connnect_url = Config.baseURL;
+        }
+
+        okHttpClient.connectTimeout(30, TimeUnit.SECONDS);
 
         retrofit = new Retrofit.Builder()
-                .baseUrl(Config.baseURL)
+                .baseUrl(connnect_url)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .client(okHttpClient)
+                .client(okHttpClient.build())
                 .build();
         return githubManager.retrofit;
-    }
-
-    public static Retrofit getGoogleInstance() {
-        okHttpClient = builder.build();
-        retrofit = new Retrofit.Builder()
-                .baseUrl(Config.baseURL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(okHttpClient)
-                .build();
-        return googleManager.retrofit;
     }
 }
